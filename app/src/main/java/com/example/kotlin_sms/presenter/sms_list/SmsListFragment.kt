@@ -27,6 +27,11 @@ class SmsListFragment : Fragment(R.layout.fragment_sms_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.chatMessageEntries.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
         initializeRecycler()
         requireSmsPermission()
     }
@@ -35,7 +40,7 @@ class SmsListFragment : Fragment(R.layout.fragment_sms_list) {
         requirePermission(
             permission = Manifest.permission.READ_SMS,
             successDelegate = {
-                fillMockData()
+                viewModel.loadSmsMessages(requireContext().contentResolver)
             },
             failureDelegate = {
 

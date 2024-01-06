@@ -43,8 +43,11 @@ class SmsItemsAdapter(
             val context = binding.root.context
 
             titleTextView.text = entry.address
-            messageTextView.text = entry.messages.first().message
-            timeTextView.text = entry.messages.first().time
+
+            val message = entry.messages.first()
+
+            messageTextView.text = message.message
+            timeTextView.text = message.time
 
             root.setOnClickListener {
                 onItemClick(entry)
