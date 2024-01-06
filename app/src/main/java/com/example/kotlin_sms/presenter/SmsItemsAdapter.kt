@@ -29,8 +29,10 @@ class SmsItemsAdapter(
         holder.bind(list[position])
     }
 
-    fun submitList(list: List<SmsListItem>) {
-        this.list.addAll(list)
+    fun submitList(list: List<SmsListItem>) = with(this.list) {
+        clear()
+        addAll(list)
+        notifyDataSetChanged()
     }
 
     inner class SmsEntryViewHolder(
