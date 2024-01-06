@@ -10,14 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_sms.data.item.SmsListItem
 import com.example.kotlin_sms.databinding.SmsListItemBinding
 
-class SmsItemsAdapter : RecyclerView.Adapter<SmsItemsAdapter.SmsEntryViewHolder>() {
+class SmsItemsAdapter(
+    private val onItemClick: (SmsListItem) -> Unit,
+) : RecyclerView.Adapter<SmsItemsAdapter.SmsEntryViewHolder>() {
 
     private val list = mutableListOf<SmsListItem>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmsEntryViewHolder {
         val context = parent.context
         val layoutInflater = LayoutInflater.from(context)
         val binding = SmsListItemBinding.inflate(layoutInflater, parent, false)
-        return SmsEntryViewHolder(binding)
+        return SmsEntryViewHolder(binding, onItemClick)
     }
 
     override fun getItemCount(): Int =
@@ -33,6 +35,7 @@ class SmsItemsAdapter : RecyclerView.Adapter<SmsItemsAdapter.SmsEntryViewHolder>
 
     inner class SmsEntryViewHolder(
         private val binding: SmsListItemBinding,
+        private val onItemClick: (SmsListItem) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(entry: SmsListItem) = with(binding) {
             val context = binding.root.context
@@ -40,6 +43,10 @@ class SmsItemsAdapter : RecyclerView.Adapter<SmsItemsAdapter.SmsEntryViewHolder>
             titleTextView.text = entry.address
             messageTextView.text = entry.messages.first().message
             timeTextView.text = entry.messages.first().time
+
+            root.setOnClickListener {
+                onItemClick(entry)
+            }
         }
     }
 }
