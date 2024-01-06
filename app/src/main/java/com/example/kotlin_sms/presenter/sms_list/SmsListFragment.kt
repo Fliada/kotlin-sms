@@ -51,9 +51,9 @@ class SmsListFragment : Fragment(R.layout.fragment_sms_list) {
     private fun fillMockData() {
         adapter.submitList(
             listOf(
-                SmsListItem("Кто ты", listOf(MessageListItem("Hello world", "12:34"))),
-                SmsListItem("ААААААААААА", listOf(MessageListItem("Bye namespace", "19:12"))),
-                SmsListItem("OMG", listOf(MessageListItem("HIIIIIII!!!!!!", "11:34"))),
+                SmsListItem("Кто ты", listOf(MessageListItem("Hello world", "12:34", true))),
+                SmsListItem("ААААААААААА", listOf(MessageListItem("Bye namespace", "19:12", true))),
+                SmsListItem("OMG", listOf(MessageListItem("HIIIIIII!!!!!!", "11:34", true))),
             )
         )
     }

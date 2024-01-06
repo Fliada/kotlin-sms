@@ -40,8 +40,10 @@ class SmsListViewModel: ViewModel() {
                 val address = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.ADDRESS))
                 val body = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.BODY))
                 val time = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.DATE_SENT))
+                val type = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Sms.TYPE))
+                val isSent = type == Telephony.Sms.MESSAGE_TYPE_SENT
                 Log.d("SmsListViewModel", "$time | ${time.toLong()} | ${timestampToString(time.toLong())} | $address")
-                result.list.add(address to MessageListItem(body, timestampToString(time.toLong())))
+                result.list.add(address to MessageListItem(body, timestampToString(time.toLong()), isSent))
             } while (cursor.moveToNext())
         }
 
