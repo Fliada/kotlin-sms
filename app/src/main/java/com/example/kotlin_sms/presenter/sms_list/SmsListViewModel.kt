@@ -39,7 +39,7 @@ class SmsListViewModel: ViewModel() {
             do {
                 val address = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.ADDRESS))
                 val body = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.BODY))
-                val time = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.DATE_SENT))
+                val time = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.DATE))
                 val type = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Sms.TYPE))
                 val isSent = type == Telephony.Sms.MESSAGE_TYPE_SENT
                 Log.d("SmsListViewModel", "$time | ${time.toLong()} | ${timestampToString(time.toLong())} | $address")
@@ -53,14 +53,9 @@ class SmsListViewModel: ViewModel() {
     }
 
     private fun timestampToString(timestamp: Long) =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            formatter.format(convertMillisToDateTime(timestamp))
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
+        formatter.format(convertMillisToDateTime(timestamp))
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun convertMillisToDateTime(millis: Long): LocalDateTime {
         val instant = Instant.ofEpochMilli(millis)
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
@@ -68,11 +63,8 @@ class SmsListViewModel: ViewModel() {
 
     companion object {
         private const val TIME_FORMAT = "HH:mm"
-        private val formatter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        private val formatter =
             DateTimeFormatter.ofPattern(TIME_FORMAT)
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
     }
 }
 
