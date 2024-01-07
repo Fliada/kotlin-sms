@@ -6,23 +6,25 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kotlin_sms.R
+import com.example.kotlin_sms.SmsListClickListener
 import com.example.kotlin_sms.data.item.MessageListItem
 import com.example.kotlin_sms.data.item.SmsListItem
 import com.example.kotlin_sms.databinding.FragmentSmsListBinding
 import com.example.kotlin_sms.presenter.SmsItemsAdapter
 import com.example.kotlin_sms.requirePermission
 
-class SmsListFragment : Fragment(R.layout.fragment_sms_list) {
+class SmsListFragment : Fragment(R.layout.fragment_sms_list), SmsListClickListener {
 
     private val binding: FragmentSmsListBinding by viewBinding()
     private val viewModel: SmsListViewModel by viewModels()
 
     private val adapter = SmsItemsAdapter(
-        ::onChatItemClick,
+        ::onSmsListItemClick,
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +60,7 @@ class SmsListFragment : Fragment(R.layout.fragment_sms_list) {
         )
     }
 
+    //Old version
     private fun onChatItemClick(entry: SmsListItem) {
         Toast.makeText(requireContext(), entry.address, Toast.LENGTH_SHORT).show()
     }
@@ -71,5 +74,10 @@ class SmsListFragment : Fragment(R.layout.fragment_sms_list) {
                 LinearLayoutManager.VERTICAL
             )
         )
+    }
+
+    override fun onSmsListItemClick(entry: SmsListItem) {
+        val direction = SmsListFragmentDirections.actionSmsListFragmentToChatListFragment(smsListItem = entry)
+        findNavController().navigate(direction)
     }
 }
